@@ -15,6 +15,68 @@ class DomJSHetiDirectory extends HetiDirectory  {
     this._directory = e;
   }
 
+  Future<HetiDirectory> getDirectory(String path) {
+    Completer<HetiDirectory> comp = new Completer();
+    _directory.callMethod("getDirectory",
+        [
+          name,
+          new js.JsObject.jsify({'create': false}),
+          (a) {
+            comp.complete(a);
+          },
+          (b) {
+            comp.completeError(b);
+          }
+          ]);
+    return comp.future;
+  }
+
+  Future<HetiFile> createFile(String path, {bool exclusive: false}) {
+    Completer<HetiFile> comp = new Completer();
+    _directory.callMethod("getFile",
+        [
+          name,
+          new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
+          (a) {
+            comp.complete(a);
+          },
+          (b) {
+            comp.completeError(b);
+          }
+          ]);
+    return comp.future;
+  }
+  Future<HetiFile> getFile(String path) {
+    Completer<HetiFile> comp = new Completer();
+    _directory.callMethod("getFile",
+        [
+          name,
+          new js.JsObject.jsify({'create': false}),
+          (a) {
+            comp.complete(a);
+          },
+          (b) {
+            comp.completeError(b);
+          }
+          ]);
+    return comp.future;
+  }
+  Future<HetiDirectory> createDirectory(String name, {bool exclusive: false}) {
+    Completer<HetiDirectory> comp = new Completer();
+    _directory.callMethod("getDirectory",
+        [
+          name,
+          new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
+          (a) {
+            comp.complete(a);
+          },
+          (b) {
+            comp.completeError(b);
+          }
+          ]);
+    return comp.future;
+  }
+
   Future<HetiDirectory> getParent() {
     Completer<HetiDirectory> ret = new Completer();
     _directory.callMethod("getParent",[
@@ -63,7 +125,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
 
 }
 
-
+/*
 class DomHetiDirectory extends HetiDirectory  {
   html.DirectoryEntry _directory = null;
   List<HetiEntry> lastGetList = [];
@@ -108,6 +170,7 @@ class DomHetiDirectory extends HetiDirectory  {
     return ret.future;
   }
 }
+*/
 
 class DomJSHetiFile extends HetiFile {
   js.JsObject _file = null;
@@ -135,7 +198,7 @@ class DomJSHetiFile extends HetiFile {
   }
 }
 
-
+/*
 class DomHetiFile extends HetiFile {
   html.FileEntry _file = null;
   DomHetiFile._create(html.FileEntry file) {
@@ -159,6 +222,7 @@ class DomHetiFile extends HetiFile {
     return ret.future;
   }
 }
+*/
 
 class DomJSHetiFileSystem extends HetiFileSystem {
   js.JsObject _fileSystem = null;
@@ -186,7 +250,7 @@ class DomJSHetiFileSystem extends HetiFileSystem {
   }
 }
 
-
+/*
 class DomHetiFileSystem extends HetiFileSystem {
   html.FileSystem _fileSystem = null;
   static Future<HetiFileSystem> getFileSystem() {
@@ -208,3 +272,4 @@ class DomHetiFileSystem extends HetiFileSystem {
     return new DomHetiDirectory._create(e);
   }
 }
+*/

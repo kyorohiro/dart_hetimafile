@@ -4,7 +4,7 @@
 /// The dart_hetimafile library.
 ///
 /// This is an awesome library. More dartdocs go here.
-library hetimafile;
+library hetimafile_cl;
 
 // TODO: Export any libraries intended for clients of this package.
 

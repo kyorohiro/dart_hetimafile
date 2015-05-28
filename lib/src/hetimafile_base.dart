@@ -24,10 +24,11 @@ abstract class HetiDirectory extends HetiEntry {
   String get name;
   String get fullPath;
   Future<List<HetiEntry>> getList();
+  Future<HetiDirectory> createDirectory(String name, {bool exclusive: false});
+  Future<HetiDirectory> getDirectory(String path);
+  Future<HetiFile> createFile(String path, {bool exclusive: false});
+  Future<HetiFile> getFile(String path);
 }
-
-
-
 
 abstract class HetiFile extends HetiEntry {
   String get name;
