@@ -15,6 +15,10 @@ class DomJSHetiDirectory extends HetiDirectory  {
     this._directory = e;
   }
 
+  js.JsObject toBinary() {
+    return _directory;
+  }
+
   Future<HetiDirectory> getDirectory(String path) {
     Completer<HetiDirectory> comp = new Completer();
     _directory.callMethod("getDirectory",
@@ -22,7 +26,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
           name,
           new js.JsObject.jsify({'create': false}),
           (a) {
-            comp.complete(a);
+            comp.complete(new DomJSHetiDirectory._create(a));
           },
           (b) {
             comp.completeError(b);
@@ -38,7 +42,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
           name,
           new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
           (a) {
-            comp.complete(a);
+            comp.complete(new DomJSHetiFile._create(a));
           },
           (b) {
             comp.completeError(b);
@@ -53,7 +57,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
           name,
           new js.JsObject.jsify({'create': false}),
           (a) {
-            comp.complete(a);
+            comp.complete(new DomJSHetiDirectory._create(a));
           },
           (b) {
             comp.completeError(b);
@@ -68,7 +72,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
           name,
           new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
           (a) {
-            comp.complete(a);
+            comp.complete(new DomJSHetiDirectory._create(a));
           },
           (b) {
             comp.completeError(b);
