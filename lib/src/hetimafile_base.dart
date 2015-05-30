@@ -37,7 +37,8 @@ abstract class HetiFile extends HetiEntry {
   bool isFile() {
     return true;
   }
-  Future<hetima.HetimaBuilder> getHetimaBuilder();
+  Future<hetima.HetimaFile> getHetimaFile();
+//  Future<hetima.HetimaBuilder> getHetimaBuilder();
   Future<dynamic> remove();
 }
 

@@ -151,6 +151,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
       }]);
     return ret.future;
   }
+
 }
 
 /*
@@ -211,13 +212,13 @@ class DomJSHetiFile extends HetiFile {
     return true;
   }
 
-  Future<hetima.HetimaBuilder> getHetimaBuilder() {
-    Completer<hetima.HetimaBuilder> ret = new Completer();
+  Future<hetima.HetimaFile> getHetimaFile() {
+    Completer<hetima.HetimaFile> ret = new Completer();
     _file.callMethod("file",[
       (a){
-        hetima.HetimaFile ff = new hetima.HetimaFileBlob(a);
-             hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
-             ret.complete(b);
+        hetima.HetimaFile ff = new hetima.HetimaFileFS(a);
+//             hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
+        ret.complete(ff);
       },
       (b){
         ret.completeError(b);
