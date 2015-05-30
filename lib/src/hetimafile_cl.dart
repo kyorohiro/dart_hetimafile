@@ -201,6 +201,31 @@ class DomHetiDirectory extends HetiDirectory  {
 }
 */
 
+
+class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
+  js.JsObject _file = null;
+  js.JsObject _writer = null;
+  
+  DomJSHetiFileWriter(js.JsObject _file) {
+    this._file = _file;
+  }
+
+  Future<hetima.WriteResult> write(Object o, int start){
+    Completer<hetima.WriteResult> ret = new Completer();
+   _file.callMethod("createWriter",[(a){
+     _writer = a;
+     _writer["onwriteend"] = () {
+     };
+     _writer.callMethod("seek",[start]);
+     _writer.callMethod("write",[o]);
+     ret.complete(new hetima.WriteResult());
+   },(b) {
+     ret.completeError(b);
+   }]);
+   return ret.future;
+  }
+}
+
 class DomJSHetiFile extends HetiFile {
   js.JsObject _file = null;
   DomJSHetiFile._create(js.JsObject file) {
@@ -212,12 +237,14 @@ class DomJSHetiFile extends HetiFile {
     return true;
   }
 
+
   Future<hetima.HetimaFile> getHetimaFile() {
     Completer<hetima.HetimaFile> ret = new Completer();
     _file.callMethod("file",[
       (a){
-        hetima.HetimaFile ff = new hetima.HetimaFileFS(a);
-//             hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
+       hetima.HetimaFile ff = new hetima.HetimaFileBlob(a, new DomJSHetiFileWriter(_file));   
+        //hetima.HetimaFile ff = new hetima.HetimaFileFS.fromFile(a);
+        //     hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
         ret.complete(ff);
       },
       (b){
