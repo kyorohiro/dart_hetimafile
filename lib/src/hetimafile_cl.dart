@@ -20,6 +20,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
   }
 
   Future<HetiDirectory> getDirectory(String path) {
+    html.Entry r;
     Completer<HetiDirectory> comp = new Completer();
     _directory.callMethod("getDirectory",
         [
@@ -127,6 +128,29 @@ class DomJSHetiDirectory extends HetiDirectory  {
     return ret.future;
   }
 
+  Future<dynamic> remove() {
+    Completer<HetiDirectory> ret = new Completer();
+    _directory.callMethod("remove",[
+      (a){
+          ret.complete(a);
+      },
+      (b){
+        ret.completeError(b);
+      }]);
+    return ret.future;
+  }
+
+  Future<dynamic> removeRecursively() {    
+    Completer<HetiDirectory> ret = new Completer();
+    _directory.callMethod("removeRecursively",[
+      (a){
+          ret.complete(a);
+      },
+      (b){
+        ret.completeError(b);
+      }]);
+    return ret.future;
+  }
 }
 
 /*
@@ -194,6 +218,18 @@ class DomJSHetiFile extends HetiFile {
         hetima.HetimaFile ff = new hetima.HetimaFileBlob(a);
              hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
              ret.complete(b);
+      },
+      (b){
+        ret.completeError(b);
+      }]);
+    return ret.future;
+  }
+
+  Future<dynamic> remove() {
+    Completer<HetiDirectory> ret = new Completer();
+    _file.callMethod("remove",[
+      (a){
+          ret.complete(a);
       },
       (b){
         ret.completeError(b);

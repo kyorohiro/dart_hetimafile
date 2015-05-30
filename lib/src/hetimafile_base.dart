@@ -28,6 +28,8 @@ abstract class HetiDirectory extends HetiEntry {
   Future<HetiDirectory> getDirectory(String path);
   Future<HetiFile> createFile(String path, {bool exclusive: false});
   Future<HetiFile> getFile(String path);
+  Future<dynamic> remove();
+  Future<dynamic> removeRecursively();
 }
 
 abstract class HetiFile extends HetiEntry {
@@ -36,6 +38,7 @@ abstract class HetiFile extends HetiEntry {
     return true;
   }
   Future<hetima.HetimaBuilder> getHetimaBuilder();
+  Future<dynamic> remove();
 }
 
 
