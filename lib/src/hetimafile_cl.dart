@@ -232,7 +232,7 @@ class DomJSHetiFile extends HetiFile {
     this._file = file;
   }
   String get name => _file["name"];
-
+  String get fullPath => _directory["fullPath"];
   bool isFile() {
     return true;
   }
