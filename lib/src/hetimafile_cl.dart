@@ -214,11 +214,15 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
     Completer<hetima.WriteResult> ret = new Completer();
    _file.callMethod("createWriter",[(a){
      _writer = a;
-     _writer["onwriteend"] = () {
+     print("writer ${_writer} ${_writer.runtimeType}");
+     _writer["onwriteend"] = (d) {
+       print("onwriteend ${d}");
+       ret.complete(new hetima.WriteResult());
      };
      _writer.callMethod("seek",[start]);
-     _writer.callMethod("write",[new html.Blob([o])]);
-     ret.complete(new hetima.WriteResult());
+     html.Blob b = new html.Blob([o]);
+     _writer.callMethod("write",[b]);
+
    },(b) {
      ret.completeError(b);
    }]);
