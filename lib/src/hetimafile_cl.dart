@@ -217,7 +217,7 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
      _writer["onwriteend"] = () {
      };
      _writer.callMethod("seek",[start]);
-     _writer.callMethod("write",[o]);
+     _writer.callMethod("write",[new html.Blob(o)]);
      ret.complete(new hetima.WriteResult());
    },(b) {
      ret.completeError(b);
