@@ -40,6 +40,7 @@ abstract class HetiFile extends HetiEntry {
   Future<hetima.HetimaFile> getHetimaFile();
 //  Future<hetima.HetimaBuilder> getHetimaBuilder();
   Future<dynamic> remove();
+  Future<HetiDirectory> getParent();
 }
 
 

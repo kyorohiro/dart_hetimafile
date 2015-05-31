@@ -24,7 +24,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
     Completer<HetiDirectory> comp = new Completer();
     _directory.callMethod("getDirectory",
         [
-          name,
+          path,
           new js.JsObject.jsify({'create': false}),
           (a) {
             comp.complete(new DomJSHetiDirectory._create(a));
@@ -36,11 +36,11 @@ class DomJSHetiDirectory extends HetiDirectory  {
     return comp.future;
   }
 
-  Future<HetiFile> createFile(String path, {bool exclusive: false}) {
+  Future<HetiFile> createFile(String nameFile, {bool exclusive: false}) {
     Completer<HetiFile> comp = new Completer();
     _directory.callMethod("getFile",
         [
-          name,
+          nameFile,
           new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
           (a) {
             comp.complete(new DomJSHetiFile._create(a));
@@ -55,7 +55,7 @@ class DomJSHetiDirectory extends HetiDirectory  {
     Completer<HetiFile> comp = new Completer();
     _directory.callMethod("getFile",
         [
-          name,
+          path,
           new js.JsObject.jsify({'create': false}),
           (a) {
             comp.complete(new DomJSHetiDirectory._create(a));
@@ -66,11 +66,11 @@ class DomJSHetiDirectory extends HetiDirectory  {
           ]);
     return comp.future;
   }
-  Future<HetiDirectory> createDirectory(String name, {bool exclusive: false}) {
+  Future<HetiDirectory> createDirectory(String nameDir, {bool exclusive: false}) {
     Completer<HetiDirectory> comp = new Completer();
     _directory.callMethod("getDirectory",
         [
-          name,
+          nameDir,
           new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
           (a) {
             comp.complete(new DomJSHetiDirectory._create(a));
@@ -241,6 +241,21 @@ class DomJSHetiFile extends HetiFile {
     return true;
   }
 
+  Future<HetiDirectory> getParent() {
+    Completer<HetiDirectory> ret = new Completer();
+    _file.callMethod("getParent",[
+      (a){
+        if(a != null) {
+          ret.complete(new DomJSHetiDirectory._create(a));
+        } else {
+          ret.complete(null);
+        }
+      },
+      (b){
+        ret.completeError(b);
+      }]);
+    return ret.future;
+  }
 
   Future<hetima.HetimaFile> getHetimaFile() {
     Completer<hetima.HetimaFile> ret = new Completer();
