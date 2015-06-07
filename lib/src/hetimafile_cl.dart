@@ -257,11 +257,11 @@ class DomJSHetiFile extends HetiFile {
     return ret.future;
   }
 
-  Future<hetima.HetimaFile> getHetimaFile() {
-    Completer<hetima.HetimaFile> ret = new Completer();
+  Future<hetima.HetimaData> getHetimaFile() {
+    Completer<hetima.HetimaData> ret = new Completer();
     _file.callMethod("file",[
       (a){
-       hetima.HetimaFile ff = new hetima.HetimaFileBlob(a, new DomJSHetiFileWriter(_file));   
+       hetima.HetimaData ff = new hetima.HetimaDataBlob(a, new DomJSHetiFileWriter(_file));   
         //hetima.HetimaFile ff = new hetima.HetimaFileFS.fromFile(a);
         //     hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
         ret.complete(ff);
