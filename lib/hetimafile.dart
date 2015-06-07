@@ -9,3 +9,4 @@ library hetimafile;
 // TODO: Export any libraries intended for clients of this package.
 
 export 'src/hetimafile_base.dart';
+export 'src/hetimadata_cache.dart';

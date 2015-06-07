@@ -337,6 +337,13 @@ class DomJSHetiFileSystem extends HetiFileSystem {
   }
 }
 
+
+class DomJSHetiFileSystemBuilder extends HetiFileSystemBuilder {
+  Future<HetiFileSystem> getFileSystem() {
+    return DomJSHetiFileSystem.getFileSystem();
+  }
+}
+
 /*
 class DomHetiFileSystem extends HetiFileSystem {
   html.FileSystem _fileSystem = null;

@@ -38,7 +38,6 @@ abstract class HetiFile extends HetiEntry {
     return true;
   }
   Future<hetima.HetimaData> getHetimaFile();
-//  Future<hetima.HetimaBuilder> getHetimaBuilder();
   Future<dynamic> remove();
   Future<HetiDirectory> getParent();
 }
@@ -48,4 +47,8 @@ abstract class HetiFileSystem {
   HetiDirectory get root;
 }
 
+
+abstract class HetiFileSystemBuilder {
+  Future<HetiFileSystem> getFileSystem();
+}
 
