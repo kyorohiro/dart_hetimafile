@@ -6,6 +6,7 @@ import 'package:hetimacore/hetimacore.dart' as hetima;
 import 'package:hetimacore/hetimacore_cl.dart' as hetima;
 import 'dart:js' as js;
 import 'hetimafile_base.dart';
+import 'dart:typed_data' as type;
 
 class DomJSHetiDirectory extends HetiDirectory {
   js.JsObject _directory = null;
@@ -207,11 +208,16 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
   js.JsObject _file = null;
   js.JsObject _writer = null;
 
-  DomJSHetiFileWriter(js.JsObject _file) {
+  html.Blob _mBlob = null;
+  DomJSHetiFileWriter(js.JsObject _file, html.Blob blob) {
     this._file = _file;
+    _mBlob = blob;
   }
 
   Future<hetima.WriteResult> write(Object o, int start) {
+    if (o is List<int> && !(o is type.Uint8List)) {
+      o = new type.Uint8List.fromList(o);
+    }
     Completer<hetima.WriteResult> ret = new Completer();
     _file.callMethod("createWriter", [
       (a) {
@@ -221,9 +227,20 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
           print("onwriteend ${d}");
           ret.complete(new hetima.WriteResult());
         };
-        _writer.callMethod("seek", [start]);
-        html.Blob b = new html.Blob([o]);
-        _writer.callMethod("write", [b]);
+        //
+        // seel
+        {
+          if (_mBlob.size < start) {
+            _writer.callMethod("seek", [_mBlob.size]);
+            List<int> d = new type.Uint8List.fromList(new List.filled(start-_mBlob.size, 0));
+            html.Blob b = new html.Blob([d,o]);
+            _writer.callMethod("write", [b]);
+          } else {
+            _writer.callMethod("seek", [start]);            
+            html.Blob b = new html.Blob([o]);
+            _writer.callMethod("write", [b]);
+          }
+        }
       },
       (b) {
         ret.completeError(b);
@@ -265,9 +282,7 @@ class DomJSHetiFile extends HetiFile {
     Completer<hetima.HetimaData> ret = new Completer();
     _file.callMethod("file", [
       (a) {
-        hetima.HetimaData ff = new hetima.HetimaDataBlob(a, new DomJSHetiFileWriter(_file));
-        //hetima.HetimaFile ff = new hetima.HetimaFileFS.fromFile(a);
-        //     hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
+        hetima.HetimaData ff = new hetima.HetimaDataBlob(a, new DomJSHetiFileWriter(_file, a));
         ret.complete(ff);
       },
       (b) {

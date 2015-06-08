@@ -11,17 +11,24 @@ import 'package:hetimafile/hetimafile_cl.dart';
 void main() {
   print("test");
   DomJSHetiFileSystemBuilder builder = new DomJSHetiFileSystemBuilder();
-  builder.requestQuota().then((int v){
+  builder.requestQuota().then((int v) {
     print("---a---${v}");
-    builder.getFileSystem().then((HetiFileSystem fs) {
+    return builder.getFileSystem().then((HetiFileSystem fs) {
       print("---b---");
-      HetimaDataCache cache = new HetimaDataCache("test", fs.root);
-      return cache.getLength();
-    }).then((int length) {
-      print("length=${length}");
+      HetimaDataCache cache = new HetimaDataCache("test", fs.root, cashSize:10);
+      return cache.getLength().then((int length) {
+        print("length=${length}");
+        return cache.write([9,8,7], 15);
+      }).then((WriteResult r) {
+        print("w");
+        return cache.read(0, 20);
+      }).then((ReadResult r) {
+        print("r");
+        print("r ${r.buffer}");
+      });
     });
-  }).catchError((e){
-    print("---e---${e}");    
+  }).catchError((e) {
+    print("---e---${e}");
   });
   /*
 
