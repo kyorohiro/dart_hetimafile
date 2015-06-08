@@ -56,7 +56,7 @@ class DomJSHetiDirectory extends HetiDirectory {
       path,
       new js.JsObject.jsify({'create': false}),
       (a) {
-        comp.complete(new DomJSHetiDirectory._create(a));
+        comp.complete(new DomJSHetiFile._create(a));
       },
       (b) {
         comp.completeError(b);
@@ -133,8 +133,8 @@ class DomJSHetiDirectory extends HetiDirectory {
   Future<dynamic> remove() {
     Completer<HetiDirectory> ret = new Completer();
     _directory.callMethod("remove", [
-      (a) {
-        ret.complete(a);
+      () {
+        ret.complete();
       },
       (b) {
         ret.completeError(b);
@@ -146,8 +146,8 @@ class DomJSHetiDirectory extends HetiDirectory {
   Future<dynamic> removeRecursively() {
     Completer<HetiDirectory> ret = new Completer();
     _directory.callMethod("removeRecursively", [
-      (a) {
-        ret.complete(a);
+      () {
+        ret.complete({});
       },
       (b) {
         ret.completeError(b);
@@ -293,10 +293,10 @@ class DomJSHetiFile extends HetiFile {
   }
 
   Future<dynamic> remove() {
-    Completer<HetiDirectory> ret = new Completer();
+    Completer<dynamic> ret = new Completer();
     _file.callMethod("remove", [
-      (a) {
-        ret.complete(a);
+      () {
+        ret.complete({});
       },
       (b) {
         ret.completeError(b);
