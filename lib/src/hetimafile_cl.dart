@@ -7,7 +7,7 @@ import 'package:hetimacore/hetimacore_cl.dart' as hetima;
 import 'dart:js' as js;
 import 'hetimafile_base.dart';
 
-class DomJSHetiDirectory extends HetiDirectory  {
+class DomJSHetiDirectory extends HetiDirectory {
   js.JsObject _directory = null;
   List<HetiEntry> lastGetList = [];
 
@@ -22,79 +22,76 @@ class DomJSHetiDirectory extends HetiDirectory  {
   Future<HetiDirectory> getDirectory(String path) {
     html.Entry r;
     Completer<HetiDirectory> comp = new Completer();
-    _directory.callMethod("getDirectory",
-        [
-          path,
-          new js.JsObject.jsify({'create': false}),
-          (a) {
-            comp.complete(new DomJSHetiDirectory._create(a));
-          },
-          (b) {
-            comp.completeError(b);
-          }
-          ]);
+    _directory.callMethod("getDirectory", [
+      path,
+      new js.JsObject.jsify({'create': false}),
+      (a) {
+        comp.complete(new DomJSHetiDirectory._create(a));
+      },
+      (b) {
+        comp.completeError(b);
+      }
+    ]);
     return comp.future;
   }
 
   Future<HetiFile> createFile(String nameFile, {bool exclusive: false}) {
     Completer<HetiFile> comp = new Completer();
-    _directory.callMethod("getFile",
-        [
-          nameFile,
-          new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
-          (a) {
-            comp.complete(new DomJSHetiFile._create(a));
-          },
-          (b) {
-            comp.completeError(b);
-          }
-          ]);
+    _directory.callMethod("getFile", [
+      nameFile,
+      new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
+      (a) {
+        comp.complete(new DomJSHetiFile._create(a));
+      },
+      (b) {
+        comp.completeError(b);
+      }
+    ]);
     return comp.future;
   }
   Future<HetiFile> getFile(String path) {
     Completer<HetiFile> comp = new Completer();
-    _directory.callMethod("getFile",
-        [
-          path,
-          new js.JsObject.jsify({'create': false}),
-          (a) {
-            comp.complete(new DomJSHetiDirectory._create(a));
-          },
-          (b) {
-            comp.completeError(b);
-          }
-          ]);
+    _directory.callMethod("getFile", [
+      path,
+      new js.JsObject.jsify({'create': false}),
+      (a) {
+        comp.complete(new DomJSHetiDirectory._create(a));
+      },
+      (b) {
+        comp.completeError(b);
+      }
+    ]);
     return comp.future;
   }
   Future<HetiDirectory> createDirectory(String nameDir, {bool exclusive: false}) {
     Completer<HetiDirectory> comp = new Completer();
-    _directory.callMethod("getDirectory",
-        [
-          nameDir,
-          new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
-          (a) {
-            comp.complete(new DomJSHetiDirectory._create(a));
-          },
-          (b) {
-            comp.completeError(b);
-          }
-          ]);
+    _directory.callMethod("getDirectory", [
+      nameDir,
+      new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
+      (a) {
+        comp.complete(new DomJSHetiDirectory._create(a));
+      },
+      (b) {
+        comp.completeError(b);
+      }
+    ]);
     return comp.future;
   }
 
   Future<HetiDirectory> getParent() {
     Completer<HetiDirectory> ret = new Completer();
-    _directory.callMethod("getParent",[
-      (a){
-        if(a != null) {
+    _directory.callMethod("getParent", [
+      (a) {
+        if (a != null) {
           ret.complete(new DomJSHetiDirectory._create(a));
         } else {
           ret.complete(null);
         }
       },
-      (b){
+      (b) {
         ret.completeError(b);
-      }]);
+      }
+    ]);
     return ret.future;
   }
 
@@ -108,50 +105,55 @@ class DomJSHetiDirectory extends HetiDirectory  {
   Future<List<HetiEntry>> getList() {
     Completer<List<HetiEntry>> ret = new Completer();
     js.JsObject reader = _directory.callMethod("createReader");
-    reader.callMethod("readEntries",[
-      (a){
+    reader.callMethod("readEntries", [
+      (a) {
         lastGetList.clear();
         js.JsArray b = a;
-        for(js.JsObject c in b.toList()) {
+        for (js.JsObject c in b.toList()) {
           print("### getList ${c} ${c.runtimeType} ${c["isDirectory"]}");
-          if(true == c["isDirectory"]) {
+          if (true == c["isDirectory"]) {
             lastGetList.add(new DomJSHetiDirectory._create(c));
-          } else if (true == c["isFile"]){
+          } else if (true == c["isFile"]) {
             lastGetList.add(new DomJSHetiFile._create(c));
           }
         }
         print("onRead ${a} ${a.runtimeType}");
         ret.complete(lastGetList);
       },
-      (b){print("onRead error");ret.completeError(b);}]);
+      (b) {
+        print("onRead error");
+        ret.completeError(b);
+      }
+    ]);
 
     return ret.future;
   }
 
   Future<dynamic> remove() {
     Completer<HetiDirectory> ret = new Completer();
-    _directory.callMethod("remove",[
-      (a){
-          ret.complete(a);
+    _directory.callMethod("remove", [
+      (a) {
+        ret.complete(a);
       },
-      (b){
+      (b) {
         ret.completeError(b);
-      }]);
+      }
+    ]);
     return ret.future;
   }
 
-  Future<dynamic> removeRecursively() {    
+  Future<dynamic> removeRecursively() {
     Completer<HetiDirectory> ret = new Completer();
-    _directory.callMethod("removeRecursively",[
-      (a){
-          ret.complete(a);
+    _directory.callMethod("removeRecursively", [
+      (a) {
+        ret.complete(a);
       },
-      (b){
+      (b) {
         ret.completeError(b);
-      }]);
+      }
+    ]);
     return ret.future;
   }
-
 }
 
 /*
@@ -201,32 +203,33 @@ class DomHetiDirectory extends HetiDirectory  {
 }
 */
 
-
 class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
   js.JsObject _file = null;
   js.JsObject _writer = null;
-  
+
   DomJSHetiFileWriter(js.JsObject _file) {
     this._file = _file;
   }
 
-  Future<hetima.WriteResult> write(Object o, int start){
+  Future<hetima.WriteResult> write(Object o, int start) {
     Completer<hetima.WriteResult> ret = new Completer();
-   _file.callMethod("createWriter",[(a){
-     _writer = a;
-     print("writer ${_writer} ${_writer.runtimeType}");
-     _writer["onwriteend"] = (d) {
-       print("onwriteend ${d}");
-       ret.complete(new hetima.WriteResult());
-     };
-     _writer.callMethod("seek",[start]);
-     html.Blob b = new html.Blob([o]);
-     _writer.callMethod("write",[b]);
-
-   },(b) {
-     ret.completeError(b);
-   }]);
-   return ret.future;
+    _file.callMethod("createWriter", [
+      (a) {
+        _writer = a;
+        print("writer ${_writer} ${_writer.runtimeType}");
+        _writer["onwriteend"] = (d) {
+          print("onwriteend ${d}");
+          ret.complete(new hetima.WriteResult());
+        };
+        _writer.callMethod("seek", [start]);
+        html.Blob b = new html.Blob([o]);
+        _writer.callMethod("write", [b]);
+      },
+      (b) {
+        ret.completeError(b);
+      }
+    ]);
+    return ret.future;
   }
 }
 
@@ -243,44 +246,47 @@ class DomJSHetiFile extends HetiFile {
 
   Future<HetiDirectory> getParent() {
     Completer<HetiDirectory> ret = new Completer();
-    _file.callMethod("getParent",[
-      (a){
-        if(a != null) {
+    _file.callMethod("getParent", [
+      (a) {
+        if (a != null) {
           ret.complete(new DomJSHetiDirectory._create(a));
         } else {
           ret.complete(null);
         }
       },
-      (b){
+      (b) {
         ret.completeError(b);
-      }]);
+      }
+    ]);
     return ret.future;
   }
 
   Future<hetima.HetimaData> getHetimaFile() {
     Completer<hetima.HetimaData> ret = new Completer();
-    _file.callMethod("file",[
-      (a){
-       hetima.HetimaData ff = new hetima.HetimaDataBlob(a, new DomJSHetiFileWriter(_file));   
+    _file.callMethod("file", [
+      (a) {
+        hetima.HetimaData ff = new hetima.HetimaDataBlob(a, new DomJSHetiFileWriter(_file));
         //hetima.HetimaFile ff = new hetima.HetimaFileFS.fromFile(a);
         //     hetima.HetimaBuilder b = new hetima.HetimaFileToBuilder(ff);
         ret.complete(ff);
       },
-      (b){
+      (b) {
         ret.completeError(b);
-      }]);
+      }
+    ]);
     return ret.future;
   }
 
   Future<dynamic> remove() {
     Completer<HetiDirectory> ret = new Completer();
-    _file.callMethod("remove",[
-      (a){
-          ret.complete(a);
+    _file.callMethod("remove", [
+      (a) {
+        ret.complete(a);
       },
-      (b){
+      (b) {
         ret.completeError(b);
-      }]);
+      }
+    ]);
     return ret.future;
   }
 }
@@ -337,10 +343,22 @@ class DomJSHetiFileSystem extends HetiFileSystem {
   }
 }
 
-
 class DomJSHetiFileSystemBuilder extends HetiFileSystemBuilder {
   Future<HetiFileSystem> getFileSystem() {
     return DomJSHetiFileSystem.getFileSystem();
+  }
+
+  Future<int> requestQuota() {
+    Completer<int> ret = new Completer();
+//    js.context["webkitStorageInfo"].callMethod("requestQuota", [
+//      1,
+
+    html.window.navigator.persistentStorage.requestQuota(5 * 1024 * 1024, (a) {
+      ret.complete(a);
+    }, (b) {
+      ret.completeError(b);
+    });
+    return ret.future;
   }
 }
 
