@@ -1,10 +1,7 @@
 library hetimafile.base;
 
 import 'dart:async';
-import 'dart:html' as html;
 import 'package:hetimacore/hetimacore.dart' as hetima;
-import 'package:hetimacore/hetimacore_cl.dart' as hetima;
-import 'dart:js' as js;
 
 class HetiEntry {
   String get name => "";
