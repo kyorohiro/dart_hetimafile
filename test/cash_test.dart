@@ -21,7 +21,7 @@ void main() {
       }).catchError((e) {
         print("## err ${e}");
       }).whenComplete(() {
-        HetimaDataCache cache = new HetimaDataCache("test", fs.root, cashSize: 10);
+        HetimaDataCache cache = new HetimaDataCache("test", fs.root, cacheSize: 1024);
         return cache.getLength().then((int length) {
           print("length=${length}");
           return cache.write([9, 8, 7], 2);
