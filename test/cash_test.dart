@@ -14,25 +14,7 @@ void main() {
   builder.requestQuota().then((int v) {
     print("---a---${v}");
     return builder.getFileSystem().then((HetiFileSystem fs) {
-      print("---b---");
-      fs.root.getFile("test").then((HetiFile f) {
-        print("## sdff ${f}");
-        return f.remove();
-      }).catchError((e) {
-        print("## err ${e}");
-      }).whenComplete(() {
-        HetimaDataCache cache = new HetimaDataCache("test", fs.root, cacheSize: 1024);
-        return cache.getLength().then((int length) {
-          print("length=${length}");
-          return cache.write([9, 8, 7], 2);
-        }).then((WriteResult r) {
-          print("w");
-          return cache.read(0, 20);
-        }).then((ReadResult r) {
-          print("r");
-          print("r ${r.buffer}");
-        });
-      });
+
     });
   }).catchError((e) {
     print("---e---${e}");

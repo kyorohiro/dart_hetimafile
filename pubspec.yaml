@@ -5,5 +5,5 @@ environment:
   sdk: '>=1.0.0 <2.0.0'
 dev_dependencies:
   hetimacore:
-    path: /Users/kiyohiro/dart/git/dart_hetimacore
+    git: https://github.com/kyorohiro/dart_hetimafile.git
   test: '>=0.12.0 <0.13.0'
