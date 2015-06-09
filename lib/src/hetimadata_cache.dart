@@ -44,9 +44,28 @@ class CashInfoManager extends HetimaData {
   }
 
   async.Future<CashInfo> getCashInfo(int startA) {
+    async.Future writeFunc(CashInfo info) {
+      if (info == null) {
+        async.Completer comp = new async.Completer();
+        comp.complete(null);
+        return comp.future;
+      }
+      return info.dataBuffer.getLength().then((int len) {
+        return info.dataBuffer.read(0, len).then((ReadResult r) {
+          return _cashData.write(r.buffer, info.index);
+        });
+      });
+    }
+
+    async.Future readFunc(CashInfo ret) {
+      return _cashData.read(startA, cashSize).then((ReadResult r) {
+        _cashInfoList.add(ret);
+        return ret.dataBuffer.write(r.buffer, 0);
+      });
+    }
+
     async.Completer<CashInfo> com = new async.Completer();
 
-    //
     for (CashInfo c in _cashInfoList) {
       if (c.index <= startA && startA <= (c.index + c.length)) {
         _cashInfoList.remove(c);
@@ -56,23 +75,21 @@ class CashInfoManager extends HetimaData {
       }
     }
 
+    CashInfo removeInfo = null;
+    CashInfo writeInfo = new CashInfo(startA - startA % cashSize, cashSize);
     // not found
     if (_cashInfoList.length >= 3) {
-      _cashInfoList.removeAt(0);
+      removeInfo = _cashInfoList.removeAt(0);
     }
-    {
-      _cashData.read(startA, cashSize).then((ReadResult r) {
-        CashInfo ret = new CashInfo(startA - startA % cashSize, cashSize);
-        _cashInfoList.add(ret);
-        return ret.dataBuffer.write(r.buffer, 0).then((WriteResult r) {
-          com.complete(ret);
-        });
-      }).catchError((e) {
-        com.completeError(e);
-      });
 
-      return com.future;
-    }
+    writeFunc(removeInfo).then((WriteResult w) {
+      return readFunc(writeInfo).then((WriteResult r) {
+        com.complete(writeInfo);
+      });
+    }).catchError((e) {
+      com.completeError(e);
+    });
+    return com.future;
   }
 
   async.Future<WriteResult> write(List<int> buffer, int start) {
