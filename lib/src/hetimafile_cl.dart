@@ -42,7 +42,7 @@ class DomJSHetiDirectory extends HetiDirectory {
       nameFile,
       new js.JsObject.jsify({'create': true, 'exclusive': exclusive}),
       (a) {
-        comp.complete(new DomJSHetiFile._create(a));
+        comp.complete(new DomJSHetiFile.create(a));
       },
       (b) {
         comp.completeError(b);
@@ -56,7 +56,7 @@ class DomJSHetiDirectory extends HetiDirectory {
       path,
       new js.JsObject.jsify({'create': false}),
       (a) {
-        comp.complete(new DomJSHetiFile._create(a));
+        comp.complete(new DomJSHetiFile.create(a));
       },
       (b) {
         comp.completeError(b);
@@ -115,7 +115,7 @@ class DomJSHetiDirectory extends HetiDirectory {
           if (true == c["isDirectory"]) {
             lastGetList.add(new DomJSHetiDirectory._create(c));
           } else if (true == c["isFile"]) {
-            lastGetList.add(new DomJSHetiFile._create(c));
+            lastGetList.add(new DomJSHetiFile.create(c));
           }
         }
         print("onRead ${a} ${a.runtimeType}");
@@ -252,7 +252,7 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
 
 class DomJSHetiFile extends HetiFile {
   js.JsObject _file = null;
-  DomJSHetiFile._create(js.JsObject file) {
+  DomJSHetiFile.create(js.JsObject file) {
     this._file = file;
   }
   String get name => _file["name"];
