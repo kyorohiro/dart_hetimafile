@@ -224,18 +224,22 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
         _writer = a;
         print("writer ${_writer} ${_writer.runtimeType}");
         _writer["onwriteend"] = (d) {
+        //  print("####[Z]");
           print("onwriteend ${d}");
           ret.complete(new hetima.WriteResult());
         };
         //
         // seel
         {
-          if (_mBlob.size < start) {
-            _writer.callMethod("seek", [_mBlob.size]);
+//          if (_mBlob.size < start) {
+          if(_writer["length"] < start) {
+        //  print("####[A] ${_mBlob.size} ${start}");
+            _writer.callMethod("seek", [_writer["length"]]);//[_mBlob.size]);
             List<int> d = new type.Uint8List.fromList(new List.filled(start-_mBlob.size, 0));
             html.Blob b = new html.Blob([d,o]);
             _writer.callMethod("write", [b]);
           } else {
+          //  print("####[B] ${_mBlob.size} ${start}");
             _writer.callMethod("seek", [start]);            
             html.Blob b = new html.Blob([o]);
             _writer.callMethod("write", [b]);
