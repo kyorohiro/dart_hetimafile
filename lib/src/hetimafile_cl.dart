@@ -231,9 +231,8 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
         //
         // seel
         {
-//          if (_mBlob.size < start) {
           if(_writer["length"] < start) {
-        //  print("####[A] ${_mBlob.size} ${start}");
+            print("####[A] ${_mBlob.size} ${start}");
             _writer.callMethod("seek", [_writer["length"]]);//[_mBlob.size]);
             List<int> d = new type.Uint8List.fromList(new List.filled(start-_mBlob.size, 0));
             html.Blob b = new html.Blob([d,o]);
