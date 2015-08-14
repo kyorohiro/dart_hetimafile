@@ -238,7 +238,7 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
             html.Blob b = new html.Blob([d,o]);
             _writer.callMethod("write", [b]);
           } else {
-          //  print("####[B] ${_mBlob.size} ${start}");
+             print("####[B] ${_mBlob.size} ${start} ${(o as type.Uint8List).length}");
             _writer.callMethod("seek", [start]);            
             html.Blob b = new html.Blob([o]);
             _writer.callMethod("write", [b]);
