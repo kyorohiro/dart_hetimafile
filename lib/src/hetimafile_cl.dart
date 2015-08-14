@@ -228,6 +228,12 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
           print("onwrite ${d}");
           ret.complete(new hetima.WriteResult());
         };
+        
+        _writer["onerror"] = (d) {
+        //  print("####[Z]");
+          print("onerror ${d}");
+          ret.completeError({});
+        };
         //
         // seel
         {
