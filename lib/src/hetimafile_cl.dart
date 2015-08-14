@@ -223,9 +223,9 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
       (a) {
         _writer = a;
         print("writer ${_writer} ${_writer.runtimeType}");
-        _writer["onwriteend"] = (d) {
+        _writer["onwrite"] = (d) {
         //  print("####[Z]");
-          print("onwriteend ${d}");
+          print("onwrite ${d}");
           ret.complete(new hetima.WriteResult());
         };
         //
