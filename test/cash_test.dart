@@ -14,7 +14,7 @@ void main() {
   DomJSHetiFileSystemBuilder builder = new DomJSHetiFileSystemBuilder();
   builder.requestQuota().then((int v) {
     print("---a---${v}");
-    saveFileA();
+    saveFile();
   }).catchError((e) {
     print("---e---${e}");
   });
@@ -68,14 +68,15 @@ Future saveFile([int begin = 0, int end = null, String name = "rawdata"]) {
                 e = end;
               }
               if (b < end) {
-//                    new Future.delayed(new Duration(microseconds:1)).then((_){a();});
                 return a();
               } else {
                 c.complete({});
               }
               /// }).catchError(c.completeError);
             }).catchError((e) {
-              a();
+              return new Future.delayed(new Duration(seconds:1)).then((_){
+                return a();
+              });
             });
           }
           a();

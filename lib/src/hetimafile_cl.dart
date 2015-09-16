@@ -214,7 +214,7 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
     _mBlob = blob;
   }
 
-  Future<hetima.WriteResult> write(Object o, int start) {
+  Future<hetima.WriteResult> write(Object o, int start, [int length=null]) {
     if (o is List<int> && !(o is type.Uint8List)) {
       o = new type.Uint8List.fromList(o);
     }
@@ -240,17 +240,16 @@ class DomJSHetiFileWriter extends hetima.HetimaFileWriter {
         // seel
         {
           if(_writer["length"] < start) {
-            print("####[A] ${_writer["length"]} ${start}");
-            //_writer.callMethod("seek", [_writer["length"]]);//[_mBlob.size]);
+            //print("####[A] ${_writer["length"]} ${start}");
             List<int> d = new type.Uint8List.fromList(new List.filled(start-_writer["length"], 0));
             html.Blob b = new html.Blob([d,o]);
             _writer.callMethod("seek", [_writer["length"]]);
-            _writer.callMethod("write", [b]);
+            _writer.callMethod("write", [b.slice(0, length+d.length)]);
           } else {
-             print("####[B] ${_writer["length"]} ${start} ${(o as type.Uint8List).length}");
+            // print("####[B] ${_writer["length"]} ${start} ${(o as type.Uint8List).length}");
             _writer.callMethod("seek", [start]);            
             html.Blob b = new html.Blob([o]);
-            _writer.callMethod("write", [b]);
+            _writer.callMethod("write", [b.slice(0, length)]);
           }
         }
       },
